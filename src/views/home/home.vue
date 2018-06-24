@@ -102,7 +102,7 @@
         // 每次新的一轮开始时，前十秒刷新数据
         const second = new Date().getSeconds();
         this.second = second;
-        if (second < 10) {
+        if (second < 15) {
           this.fetchResult().then(() => {
             this.timer = setTimeout(this.tick, 1000);
           }).catch(err => {
