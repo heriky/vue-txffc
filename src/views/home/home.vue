@@ -1,7 +1,9 @@
 <template>
     <div class="root">
         <img src="../../assets/avatar.jpg" class="avatar" :class="{rotated: isLoading}">
-        <div>{{isLoading ? '正在刷新...' : ''}}</div>
+        <div>{{isLoading ? '正在刷新...' : '等待刷新'}}</div>
+
+      <hr>
 
       <div class="h-group" style="justify-content: flex-start">
             <span>数据刷新倒计时:</span>
@@ -28,7 +30,7 @@
             <tr>
                 <th>组合</th>
                 <th>次数</th>
-                <th>整体中奖率</th>
+                <th title="计算方式：累计未中奖的次数 / 总体轮次">整体中奖率 ?</th>
             </tr>
             <tr v-for="(item, index) in configs" :key="index"
                 :style="{color: item.count >= 3 ? 'red' : 'currentColor', fontWeight: item.count >= 3 ? 'bold' : 0}">
@@ -108,6 +110,7 @@
           // 不相邻且不相连的情况下，就置为0
           // 相邻或者相连，则加1
           config.count = ( change === 1 || change === 0 || change === 9 ) ? config.count + 1 : 0;
+          config.history += ( change === 1 || change === 0 || change === 9 ) ? 1 : 0;
         });
       },
       tick() {
