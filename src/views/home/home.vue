@@ -5,7 +5,7 @@
             <span>&nbsp;&nbsp;{{59 - second}}</span>
         </div>
 
-        <p>最近几次次开奖号码(千百十个)：</p>
+        <p style="text-align: left">最近几次次开奖号码(千百十个)：</p>
         <div>{{isLoading ? '正在刷新...' : ''}}</div>
         <ul class="recent-list">
             <li v-for="(it, index) in recentNum" :key="index"
@@ -125,6 +125,7 @@
           if (rs !== this.rs) {
             this.handleData(rs);
             this.rs = rs;
+
           }
 
           this.isLoading = false;
@@ -152,6 +153,7 @@
     .recent-list {
         list-style: none;
         font-size: 24px;
+        padding: 0;
     }
 
     .prev-prize {
