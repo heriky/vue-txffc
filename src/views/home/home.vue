@@ -116,7 +116,7 @@
       },
       tick() {
         // 每次新的一轮开始时，前十秒刷新数据
-        if (this.second < 15 && this.shouldFetchAgin) {
+        if (this.second < 15) {
           this.fetchResult().then(() => {
             this.timer = setTimeout(this.tick, 1000);
           }).catch(err => {
@@ -141,7 +141,6 @@
           if (rs !== this.rs) {
             this.handleData(rs);
             this.rs = rs;
-            this.shouldFetchAgin = false; // 数据发生了变化，则不进行下一次fetch
           }
 
           this.isLoading = false;
