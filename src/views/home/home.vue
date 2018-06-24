@@ -48,6 +48,7 @@
     name: "home",
     data() {
       return {
+        shouldFetchAgain: true,
         totalCount: 1,
         fold,
         rs: '00000',
@@ -115,13 +116,13 @@
       },
       tick() {
         // 每次新的一轮开始时，前十秒刷新数据
-        const second = new Date().getSeconds();
-        this.second = second;
-        if (second < 15) {
+        if (this.second < 15 && this.shouldFetchAgin) {
           this.fetchResult().then(() => {
             this.timer = setTimeout(this.tick, 1000);
           }).catch(err => {
-            alert(err || '获取数据出错');
+            alert('获取数据出错, 请务必刷新页面');
+            clearTimeout(this.timer);
+            this.timer = null;
           })
         } else {
           this.timer = setTimeout(this.tick, 1000);
@@ -140,7 +141,7 @@
           if (rs !== this.rs) {
             this.handleData(rs);
             this.rs = rs;
-
+            this.shouldFetchAgin = false; // 数据发生了变化，则不进行下一次fetch
           }
 
           this.isLoading = false;
@@ -156,6 +157,16 @@
         this.timer = null;
       }
       this.timer = setTimeout(this.tick, 1000);
+
+      // 倒计时，不停歇脚
+      if (this.countTimer) {
+        clearTimeout(this.countTimer);
+        this.countTimer = null;
+      }
+      this.countTimer = setInterval(() => {
+        this.second = new Date().getSeconds();
+      }, 1000);
+
     }
   }
 </script>
