@@ -1,7 +1,7 @@
 <template>
     <div class="root">
-        <img src="../../assets/avatar.jpg" class="avatar" :class="{rotated: isLoading}">
-        <div>{{isLoading ? '正在刷新...' : '等待刷新'}}</div>
+        <img src="../../assets/avatar.jpg" class="avatar" :class="{rotated: inFetching}">
+        <div>{{inFetching || isLoading? '正在刷新...' : '等待刷新'}}</div>
 
       <hr>
 
@@ -48,7 +48,7 @@
     name: "home",
     data() {
       return {
-        shouldFetchAgain: true,
+        inFetching: false, // 是否在刷新时间区域内
         totalCount: 1,
         fold,
         rs: '00000',
@@ -117,6 +117,7 @@
       tick() {
         // 每次新的一轮开始时，前十秒刷新数据
         if (this.second < 15) {
+          this.inFetching = true;
           this.fetchResult().then(() => {
             this.timer = setTimeout(this.tick, 1000);
           }).catch(err => {
@@ -125,6 +126,7 @@
             this.timer = null;
           })
         } else {
+          this.inFetching = false;
           this.timer = setTimeout(this.tick, 1000);
         }
       },
