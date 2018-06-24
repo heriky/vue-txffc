@@ -114,9 +114,9 @@
         if(this.isLoading) { return Promise.resolve(false)}
         this.isLoading = true;
         return this.$http.get('/api/tencent/onlineim').then(res => {
-          this.rsList = res.data;
+          this.rsList = res;
 
-          const dataStr = res.data[0]['onlinenumber'];
+          const dataStr = res[0]['onlinenumber'];
           let rs = dataStr.toString().substr(-4);
 
           // 当数据有变化的时候才进行处理, 此时清除定时器
