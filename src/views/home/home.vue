@@ -14,7 +14,7 @@
                 <div class="h-group" style="justify-content: flex-start">
                     <span @click="toggle(index)" class="prize-item">{{it}}</span>
                     <img v-if="index === 0"
-                         src="static/fold.png"
+                         :src="fold"
                          @click="toggle(index)"
                          alt="" class="fold-icon" :class="{unfold: isExpanded}">
                 </div>
@@ -37,10 +37,12 @@
 </template>
 
 <script>
+  import fold from './assets/fold.png';
   export default {
     name: "home",
     data() {
       return {
+        fold,
         rs: '00000',
         rsList: [],
         second: 0,
