@@ -1,12 +1,14 @@
 <template>
     <div class="root">
-        <div class="h-group" style="justify-content: flex-start">
+        <img src="../../assets/avatar.jpg" class="avatar" :class="{rotated: isLoading}">
+        <div>{{isLoading ? '正在刷新...' : ''}}</div>
+
+      <div class="h-group" style="justify-content: flex-start">
             <span>数据刷新倒计时:</span>
             <span>&nbsp;&nbsp;{{59 - second}}</span>
         </div>
 
         <p style="text-align: left">最近几次次开奖号码(千百十个)：</p>
-        <div>{{isLoading ? '正在刷新...' : ''}}</div>
         <ul class="recent-list">
             <li v-for="(it, index) in recentNum" :key="index"
                 class="prev-prize"
@@ -26,11 +28,13 @@
             <tr>
                 <th>组合</th>
                 <th>次数</th>
+                <th>整体中奖率</th>
             </tr>
             <tr v-for="(item, index) in configs" :key="index"
                 :style="{color: item.count >= 3 ? 'red' : 'currentColor', fontWeight: item.count >= 3 ? 'bold' : 0}">
                 <td>{{item.label}}</td>
                 <td>{{item.count}}</td>
+                <td>{{(item.history / totalCount).toFixed(2)}}</td>
             </tr>
         </table>
     </div>
@@ -42,6 +46,7 @@
     name: "home",
     data() {
       return {
+        totalCount: 1,
         fold,
         rs: '00000',
         rsList: [],
@@ -51,27 +56,33 @@
         configs: [{
           label: '千百',
           pos: [0, 1],
-          count: 0
+          count: 0,
+          history: 0,
         }, {
           label: '千十',
           pos: [0, 2],
-          count: 0
+          count: 0,
+          history: 0,
         }, {
           label: '千个',
           pos: [0, 3],
-          count: 0
+          count: 0,
+          history: 0,
         }, {
           label: '百十',
           pos: [1, 2],
-          count: 0
+          count: 0,
+          history: 0,
         }, {
           label: '百个',
           pos: [1, 3],
-          count: 0
+          count: 0,
+          history: 0,
         }, {
           label: '十个',
           pos: [2, 3],
-          count: 0
+          count: 0,
+          history: 0,
         }]
       };
     },
@@ -88,6 +99,7 @@
         this.isExpanded = !this.isExpanded;
       },
       handleData(rs) {
+        this.totalCount += 1; //总的开奖册数
         this.configs.forEach(config => {
           const i = config.pos[0];
           const j = config.pos[1];
@@ -207,4 +219,21 @@
     .prize-item {
         cursor: pointer;
     }
+    .table th {
+      border: 1px solid #cecece;
+      background: #c3d9ff;
+      padding: 10px;
+    }
+    .avatar {
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+    }
+    .avatar.rotated {
+      animation: r 2s ease-in-out infinite;
+    }
+  @keyframes r {
+    from { transform: rotate(0deg) }
+    to { transform: rotate(360deg) }
+  }
 </style>
