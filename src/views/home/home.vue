@@ -245,7 +245,13 @@
       border-radius: 50%;
     }
     .avatar.rotated {
+      -webkit-animation: r 2s ease-in-out infinite;
+      -o-animation: r 2s ease-in-out infinite;
       animation: r 2s ease-in-out infinite;
+    }
+    @-webkit-keyframes r {
+      from { transform: rotate(0deg) }
+      to { transform: rotate(360deg) }
     }
   @keyframes r {
     from { transform: rotate(0deg) }
