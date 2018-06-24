@@ -5,7 +5,7 @@
             <span>&nbsp;&nbsp;{{59 - second}}</span>
         </div>
 
-        <p>最近10次开奖号码(千百十个)：</p>
+        <p>最近几次次开奖号码(千百十个)：</p>
         <div>{{isLoading ? '正在刷新...' : ''}}</div>
         <ul class="recent-list">
             <li v-for="(it, index) in recentNum" :key="index"
@@ -75,7 +75,8 @@
     },
     computed: {
       recentNum() {
-        return this.rsList.map(item => {
+        return this.rsList.map((item, index) => {
+          if (index % 2 ===1) return undefined;
           return item['code'].toString().substr(-4);
         })
       }
