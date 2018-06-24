@@ -76,7 +76,6 @@
     computed: {
       recentNum() {
         return this.rsList.map((item, index) => {
-          if (index % 2 ===1) return undefined;
           return item['code'].toString().substr(-4);
         })
       }
@@ -115,9 +114,9 @@
         if(this.isLoading) { return Promise.resolve(false)}
         this.isLoading = true;
         return this.$http.get('/api/tencent/onlineim').then(res => {
-          this.rsList = res.data;
+          this.rsList = res.data.filter(item => item.time.endsWith('00'));
 
-          const dataStr = res.data[0]['code'];
+          const dataStr = this.rsList[0]['code'];
           let rs = dataStr.toString().substr(-4);
 
           // 当数据有变化的时候才进行处理, 此时清除定时器
